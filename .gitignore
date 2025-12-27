@@ -19,6 +19,9 @@ Thumbs.db
 .env.local
 .env.*.local
 
+# Secrets (AWS credentials, etc.)
+.secrets/
+
 # Logs
 *.log
 npm-debug.log*

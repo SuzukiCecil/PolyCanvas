@@ -70,11 +70,6 @@ export function ResultScreen({ session, onRestart }: ResultScreenProps) {
           />
         </div>
 
-        {/* 広告プレースホルダー */}
-        <div className="bg-neutral-800 border border-neutral-700 rounded-lg h-20 mb-6 flex items-center justify-center">
-          <span className="text-neutral-500 text-sm">Ad Space</span>
-        </div>
-
         {/* 共有ボタン */}
         <div className="flex gap-3 mb-4">
           <Button

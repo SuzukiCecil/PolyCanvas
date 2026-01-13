@@ -1,10 +1,10 @@
 import type { PaletteColor } from '@/types'
 
-/** 16色パレット（要件定義書より） */
+/** 16色パレット */
 export const PALETTE: PaletteColor[] = [
-  { index: 0, hex: '#000000' },  // ブラック
-  { index: 1, hex: '#4B4B4B' },  // ダークグレー
-  { index: 2, hex: '#808080' },  // グレー
+  { index: 0, hex: '#FFFFFF' },  // ホワイト
+  { index: 1, hex: '#000000' },  // ブラック
+  { index: 2, hex: '#4B4B4B' },  // ダークグレー
   { index: 3, hex: '#C8C8C8' },  // ライトグレー
   { index: 4, hex: '#E53935' },  // レッド
   { index: 5, hex: '#FB8C00' },  // オレンジ

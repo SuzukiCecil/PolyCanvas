@@ -1,6 +1,36 @@
 import type { Vec2, Cell, PolyCanvasSession } from '@/types'
 import { distance } from './geometry'
 
+/** 市松模様パターンを作成（キャンバスサイズに応じてスケール） */
+const checkerboardPatternCache = new Map<number, CanvasPattern | null>()
+
+function getCheckerboardPattern(ctx: CanvasRenderingContext2D, canvasSize: number): CanvasPattern | null {
+  // キャンバスサイズに応じたパターンサイズ（400px基準で8px）
+  const baseSize = 8
+  const baseCanvasSize = 400
+  const size = Math.round(baseSize * (canvasSize / baseCanvasSize))
+
+  if (checkerboardPatternCache.has(size)) {
+    return checkerboardPatternCache.get(size) || null
+  }
+
+  const canvas = document.createElement('canvas')
+  canvas.width = size * 2
+  canvas.height = size * 2
+  const patternCtx = canvas.getContext('2d')
+  if (!patternCtx) return null
+
+  patternCtx.fillStyle = '#FFFFFF'
+  patternCtx.fillRect(0, 0, size * 2, size * 2)
+  patternCtx.fillStyle = '#E0E0E0'
+  patternCtx.fillRect(0, 0, size, size)
+  patternCtx.fillRect(size, size, size, size)
+
+  const pattern = ctx.createPattern(canvas, 'repeat')
+  checkerboardPatternCache.set(size, pattern)
+  return pattern
+}
+
 /**
  * 多角形パスを描画
  */
@@ -68,10 +98,17 @@ export function renderSession(
     // 可視セル
     if (cell.painted && cell.colorIndex !== null) {
       ctx.fillStyle = session.palette[cell.colorIndex].hex
+      ctx.fill()
     } else {
-      ctx.fillStyle = '#FFFFFF'
+      // 未塗りセル（市松模様）
+      const pattern = getCheckerboardPattern(ctx, canvasSize)
+      if (pattern) {
+        ctx.fillStyle = pattern
+      } else {
+        ctx.fillStyle = '#F5F5E8'
+      }
+      ctx.fill()
     }
-    ctx.fill()
 
     // ホバー表示（未塗りセルのみ）
     if (hoveredCellId === cell.id && !cell.painted) {
@@ -80,8 +117,8 @@ export function renderSession(
     }
 
     // セル境界線
-    ctx.strokeStyle = '#00000033'
-    ctx.lineWidth = 1
+    ctx.strokeStyle = '#00000050'
+    ctx.lineWidth = 1.5
     ctx.stroke()
   }
 }
@@ -107,15 +144,21 @@ export function renderForExport(
 
     if (cell.painted && cell.colorIndex !== null) {
       ctx.fillStyle = session.palette[cell.colorIndex].hex
+      ctx.fill()
     } else {
-      // 未塗りセル
-      ctx.fillStyle = backgroundColor === 'white' ? '#FFFFFF' : '#333333'
+      // 未塗りセル（市松模様）
+      const pattern = getCheckerboardPattern(ctx, size)
+      if (pattern) {
+        ctx.fillStyle = pattern
+      } else {
+        ctx.fillStyle = backgroundColor === 'white' ? '#F5F5E8' : '#333333'
+      }
+      ctx.fill()
     }
-    ctx.fill()
 
     // セル境界線
-    ctx.strokeStyle = '#00000022'
-    ctx.lineWidth = 1
+    ctx.strokeStyle = '#00000050'
+    ctx.lineWidth = size / 270
     ctx.stroke()
   }
 

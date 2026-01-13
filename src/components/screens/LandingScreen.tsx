@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import type { PolyCanvasSession } from '@/types'
 import { Button } from '@/components/ui/Button'
 import { generatePattern } from '@/generators/patternGenerator'
@@ -32,15 +33,29 @@ export function LandingScreen({ onStart }: LandingScreenProps) {
           </ul>
         </div>
 
-        {/* 広告プレースホルダー */}
-        <div className="bg-neutral-800 border border-neutral-700 rounded-lg h-20 mb-8 flex items-center justify-center">
-          <span className="text-neutral-500 text-sm">Ad Space</span>
-        </div>
-
         {/* スタートボタン */}
-        <Button size="lg" onClick={handleStart} className="w-full">
+        <Button size="lg" onClick={handleStart} className="w-full mb-8">
           START
         </Button>
+
+        {/* ナビゲーションリンク */}
+        <nav className="flex flex-wrap justify-center gap-x-4 gap-y-2 text-sm text-neutral-400">
+          <Link to="/about" className="hover:text-white transition-colors">
+            About
+          </Link>
+          <span className="text-neutral-600">|</span>
+          <Link to="/how-to-use" className="hover:text-white transition-colors">
+            使い方
+          </Link>
+          <span className="text-neutral-600">|</span>
+          <Link to="/privacy" className="hover:text-white transition-colors">
+            プライバシー
+          </Link>
+          <span className="text-neutral-600">|</span>
+          <Link to="/terms" className="hover:text-white transition-colors">
+            利用規約
+          </Link>
+        </nav>
       </div>
     </div>
   )
